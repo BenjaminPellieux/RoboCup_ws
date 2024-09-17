@@ -7,15 +7,23 @@ assignees: ''
 
 ---
 
-**Votre demande de fonctionnalité est-elle liée à un problème ? Veuillez le décrire.**
-Une description claire et concise du problème.
+What happenned ?
 
-**Décrivez la solution que vous souhaitez**
-Une description claire et concise de ce que vous voulez qu'il se passe.
 
-**Décrivez les alternatives que vous avez envisagées**
-Une description claire et concise de toute alternative ou solution que vous avez envisagée.
+Why it happenned ?
 
-**Informations supplémentaires**
-Ajoutez toute autre information, capture d'écran ou croquis concernant la fonctionnalité demandée ici.
+
+When it happenned ?
+
+
+Where it happenned ?
+
+
+Who made this error ?
+
+
+How many components impacted ?
+
+
+How can we solve it ?
 
