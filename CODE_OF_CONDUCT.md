@@ -32,7 +32,7 @@ Ce code de conduite s'applique à tous les espaces du projet, ainsi qu'aux espac
 
 ## Application
 
-Les cas de comportement abusif, harcelant ou autrement inacceptable peuvent être signalés en contactant l'équipe du projet à [email@example.com](mailto:email@example.com). Toutes les plaintes seront examinées et feront l'objet d'une enquête appropriée.
+Les cas de comportement abusif, harcelant ou autrement inacceptable peuvent être signalés en contactant l'équipe du projet à [benjamin.pellieux@ens.uvsq.fr](mailto:benjamin.pellieux@ens.uvsq.fr). Toutes les plaintes seront examinées et feront l'objet d'une enquête appropriée.
 
 ## Attribution
 
