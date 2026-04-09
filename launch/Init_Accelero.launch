@@ -1,0 +1,5 @@
+<?xml version="1.0"?> 
+<launch>
+     <node pkg="ROBOCUP2024" type="ROBOCUP2024_Initialisation_Accelero_node" name="tatat" output="screen"></node>
+</launch>
+

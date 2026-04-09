@@ -1,0 +1,41 @@
+/* Réinitialiser les marges et le padding par défaut */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #5D8AA8;
+}
+
+header
+{
+  background-color: blue;
+  display: block;
+  text-align: center;
+  border-radius: 20px;
+  background-color: #3a5a80;
+}
+
+#choix
+{
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+}
+
+#button_camera
+{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+#button_lidar
+{
+  margin-bottom: 10px;
+}
+
+
+iframe
+{
+ height: 100%;
+  width: 100%;
+}

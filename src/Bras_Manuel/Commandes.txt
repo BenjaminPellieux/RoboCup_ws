@@ -1,0 +1,5 @@
+roscore
+python3 slider.py
+rosrun bras_robotik listener_node3 
+rosrun rosserial_python serial_node.py /dev/ttyACM0 _baud:=1000000
+roslaunch Bras.launch

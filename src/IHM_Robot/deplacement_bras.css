@@ -1,0 +1,99 @@
+
+
+
+/* Réinitialiser les marges et le padding par défaut */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #5D8AA8;
+}
+
+header
+{
+  background-color: blue;
+  display: block;
+  text-align: center;
+  border-radius: 20px;
+  background-color: #3a5a80;
+}
+
+#choix
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+}
+
+#button_bras
+{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+#button_robot
+{
+  margin-bottom: 10px;
+}
+
+
+
+/*  Corp du code  */
+
+#haut
+{
+  margin-top: 4%;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider-container button, .slider-container span {
+    margin: 0 10px;
+}
+
+.slider
+{
+  width: 100%;
+}
+
+
+
+input[type=range]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px; /* Largeur du repère */
+  height: 20px; /* Hauteur du repère */
+  background: black; /* Couleur du repère */
+  z-index: 2;
+}
+
+#rangement_bras
+{
+  display: flex; /* Utilise Flexbox */
+  justify-content: center; /* Centre horizontalement les éléments enfants */
+  margin-top: 30px;
+}
+
+#bouton_deploiement
+{
+  background-color: green;
+}
+
+#bouton_rangement
+{
+  background-color: red;
+}
+
+#bouton_deploiement
+{
+  background-color: yellow;
+}
+
+

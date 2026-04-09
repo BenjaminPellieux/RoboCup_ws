@@ -1,0 +1,173 @@
+/* Réinitialiser les marges et le padding par défaut */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #5D8AA8;
+}
+
+header
+{
+  background-color: #3a5a80;
+  display: block;
+  text-align: center;
+  border-radius: 20px;
+
+}
+
+#choix
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+}
+
+#button_bras
+{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+#button_robot
+{
+  margin-bottom: 10px;
+}
+
+#conteneur_page
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+}
+
+#conteneur_page_gauche {
+  
+  width: 30%;
+  height: 500px;
+  display: flex; /* Utiliser Flexbox */
+  flex-direction: column; /* Les éléments s'alignent verticalement */
+  justify-content: center; /* Centre les éléments verticalement */
+  align-items: center; /* Centre les éléments horizontalement */
+  padding: 20px; /* Ajouter un peu de padding pour l'esthétique */
+}
+
+#conteneur_page_gauche h3, #conteneur_page_gauche input {
+  width: 80%; /* Largeur des éléments à l'intérieur du conteneur */
+  margin: 10px 0; /* Espacement entre les éléments */
+  text-align: center; /* Centrer le texte des h3 */
+}
+
+#conteneur_page_gauche input {
+  padding: 5px; /* Un peu de padding pour les inputs */
+  border: 1px solid #ddd; /* Bordure subtile pour les inputs */
+}
+
+
+#conteneur_page_droite
+{
+  width: 50%;
+  height: 500px;
+
+}
+
+#conteneur_haut
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+  height: 28%;
+}
+
+
+
+#conteneur_milieu
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+  height: 28%;
+}
+
+.fleches {
+  width: 60px; /* Augmenter la largeur des images des flèches */
+  height: 90px; /* Augmenter la hauteur des images des flèches */
+}
+
+#stop {
+  width: 120px; /* Ajuster la largeur du bouton stop */
+  height: 120px; /* Ajuster la hauteur du bouton stop */
+  margin: 20px; /* Ajuster le margin si nécessaire */
+}
+
+img {
+  width: 100%; /* S'assurer que les images remplissent leurs conteneurs */
+  height: auto; /* Garder le ratio des images */
+}
+
+
+#conteneur_bas
+{
+  display: flex;
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+  height: 28%;
+}
+
+#conteneur_droite_haut
+{
+  text-align: center;
+}
+
+
+
+.button
+{
+  font-size: 30px;
+  height: 45px;
+  width: 50px;
+}
+
+.button_stop
+{
+ 
+  height: 45px;
+  width: 50px;
+  background-color: red;
+  margin: 5px;
+}
+
+#sens {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#position {
+  display: flex;
+  justify-content: center;
+}
+
+#flipperARG, #flipperARD {
+  text-align: center; /* Centre le texte et les boutons à l'intérieur des divs */
+}
+
+.diff
+{
+  margin-top: 40px;
+}
+.diff:active {
+  background-color: #3e8e41; /* Couleur de fond lorsque le bouton est activé */
+  color: #fff; /* Vous pouvez changer la couleur du texte si nécessaire */
+}
+
+#conteneur_droite_bas
+{
+  display: flex;
+  justify-content: center;
+}
+
+#camera
+{
+  height: 200px;
+}

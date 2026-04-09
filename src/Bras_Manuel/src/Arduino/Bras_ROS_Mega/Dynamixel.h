@@ -1,0 +1,54 @@
+//------------------.H Dynamixel ----------------------//
+
+/** EEPROM AREA **/
+#define MODEL_NUMBER             "0,2"
+#define VERSION                  "2,1"
+#define ID                       "3,1"
+#define BAUD_RATE                "4,1"
+#define RETURN_DELAY_TIME        "5,1"
+#define CW_ANGLE_LIMIT           "6,2"
+#define CCW_ANGLE_LIMIT          "8,2"
+#define LIMIT_TEMPERATURE        "11,1"
+#define DOWN_LIMIT_VOLTAGE       "12,1"
+#define UP_LIMIT_VOLTAGE         "13,1"
+#define MAX_TORQUE               "14,2"
+#define RETURN_LEVEL             "16,1"
+#define ALARM_LED                "17,1"
+#define ALARM_SHUTDOWN           "18,1"
+#define DOWN_CALIBRATION         "20,2"
+#define UP_CALIBRATION           "22,2"
+
+/** RAM AREA **/
+#define TORQUE_ENABLE            "24,1"
+#define AX_LED                   "25,1"
+#define CW_COMPLIANCE_MARGIN     "26,1"
+#define CCW_COMPLIANCE_MARGIN    "27,1"
+#define CW_COMPLIANCE_SLOPE      "28,1"
+#define CCW_COMPLIANCE_SLOPE     "29,1"
+#define GOAL_POSITION            "30,2"
+#define GOAL_POSITION_MULTI      "30,4"
+#define MOVING_SPEED             "32,2"
+#define TORQUE_LIMIT             "34,2"
+#define PRESENT_POSITION         "36,2"
+#define PRESENT_SPEED            "38,2"
+#define PRESENT_LOAD             "40,2"
+#define PRESENT_VOLTAGE          "42,1"
+#define PRESENT_TEMPERATURE      "43,1"
+#define REGISTERED_INSTRUCTION   "44,1"
+#define MOVING                   "46,1"
+#define LOCK                     "47,1"
+#define PUNCH                    "48,1"
+
+#define XL430_P "116,4"
+#define XL430_T "64,1"
+#define XL430_MAX "48,4"
+#define XL430_MIN "52,4"
+
+#define SERIAL_DELAY 1
+
+//-------------Début fichier fonction dynamixel-----------------------------------//
+void WriteServo(byte servoID, int Value ,char Param[2]);
+void WriteCam(byte servoID, int Value ,char Param[2]);
+void WriteTest(byte servoID1,byte servoID2,byte servoID3,byte servoID4, int Pos1, int Pos2, int Pos3, int Pos4, int Speed);
+void ReadTest(void);
+void Packet(void);

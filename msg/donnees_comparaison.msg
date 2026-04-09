@@ -1,0 +1,15 @@
+string nom_topic
+int32 nbre_topic
+string nom_topic_but
+int32 nbre_topic_but
+float32 pourcentagebluePixels
+float32 pourcentageyellowPixels
+float32 pourcentageredPixels
+float32 pourcentageorangePixels
+float32 pourcentagevioletPixels
+float64 angle
+float64 diffangle
+float32 x
+float32 y
+float32 x_but
+float32 y_but

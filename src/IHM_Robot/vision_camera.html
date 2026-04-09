@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script type="text/javascript" src="../js/EventEmitter2-master/lib/eventemitter2.js"></script>
+  <script type="text/javascript" src="../js/roslibjs-develop/build/roslib.js"></script>
+  <script type="text/javascript" src="vision_camera.js"></script>
+
+  <link rel="stylesheet" href="vision_camera.css">
+  <title>Vision camera</title>
+</head>
+
+<header>
+  <div>
+    <h1>Vision</h1>
+  </div>
+  <div id="choix">
+    <a href="vision_camera.html">
+      <button id="button_camera">Caméra</button>
+    </a>
+    <a href="vision_lidar.html">
+      <button id="button_lidar">LIDAR</button>
+    </a>
+  </div>
+</header>
+
+<body>
+
+<div class="container">
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+</div>
+
+<div class="container">
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+  <div class="item">
+    <img src="photos/robot.png">
+  </div>
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+</div>
+
+<div class="container">
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+  <div class="item">
+    <img id="image_sub" >
+  </div>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+Read me avec connection a la raspberry via l'heternet 
+
+Il faut mettre le dossier complet de la page web dans le dossier HTML
+
+1- roscore
+2- roslaunch rosbridge_server rosbridge_websocket.launch    //Lancement du serveur web
+3- cd /home/ros/rosboard/launch   //Il faut mettre la librairie Rosboard dans le dossier ROS)
+4- roslaunch rosboard.launch     //Lancement de ROSBOARD
+5- Lancer la page web 
+
+
+Pour camera : 
+rosrun rosserial_python serial_node.py /dev/ttyACM0

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<script type="text/javascript" src="/js/EventEmitter2-master/lib/eventemitter2.js"></script>
+<script type="text/javascript" src="/js/roslibjs-develop/build/roslib.js"></script>
+<link rel="icon" type="image/png" href="/favicon.png" />
+      
+<script type="text/javascript" type="text/javascript">
+//<link rel="icon" href="/var/www/html/favicon.icofavicon.ico">
+// Connecting to ROS
+// -----------------
+var ros = new ROSLIB.Ros({
+url : 'ws://localhost:9090'
+});
+ros.on('connection', function() {
+console.log('Connected to websocket server.');
+});
+ros.on('error', function(error) {
+console.log('Error connecting to websocket server: ', error);
+});
+ros.on('close', function() {
+console.log('Connection to websocket server closed.');
+});
+// ----------------------
+var listener = new ROSLIB.Topic({
+ros : ros,
+name : '/cv_camera/image_raw/compressed',
+messageType : 'sensor_msgs/CompressedImage'
+//messageType : 'sensor_msgs/Image'
+});
+listener.subscribe(function(message) {
+console.log('Received message on ' + listener.name);
+document.getElementById('image_sub').src = "data:image/jpeg;base64," + message.data;
+//listener.unsubscribe();
+});
+
+var listener1 = new ROSLIB.Topic({
+ros : ros,
+name : '/cv_camera2/image_raw/compressed',
+messageType : 'sensor_msgs/CompressedImage'
+//messageType : 'sensor_msgs/Image'
+});
+listener1.subscribe(function(message) {
+console.log('Received message on ' + listener1.name);
+document.getElementById('image_sub2').src = "data:image/jpeg;base64," + message.data;
+//listener.unsubscribe();
+});
+
+
+
+
+
+var listener_2 = new ROSLIB.Topic({
+ros : ros,
+name : '/test',
+messageType : 'std_msgs/Int32'
+});
+listener_2.subscribe(function(message) {
+console.log('Received message on ' + listener_2.name)});
+
+
+
+  var cmdled = new ROSLIB.Topic({
+    ros : ros,
+    name : '/led_state',
+    messageType : 'std_msgs/Bool'
+  });
+
+  var led_state_on = new ROSLIB.Message({
+    data : true
+  });
+
+  var led_state_off = new ROSLIB.Message({
+    data : false
+  });
+
+    function Offled() {
+    cmdled.publish(led_state_off);
+    };
+    
+    function Onled() {
+    cmdled.publish(led_state_on);
+    };
+
+
+
+//<img id="image_sub" style='height: 50%; width: 50%; object-fit: contain' src="favicon.png">
+</script>
+</head>
+<body>
+<h1>Robot's perspective</h1>
+<p>Camera interieur</p>
+
+<img id="image_sub" >
+<p>Camera exterieur</p>
+<img id="image_sub2" >
+<h1>Toggle LED</h1>
+<p>  <button type="button" onclick="Onled()">topic led true</button> </p>
+<p>  <button type="button" onclick="Offled()">topic led false</button> </p>
+</body>
+</html>

@@ -1,0 +1,46 @@
+/* Réinitialiser les marges et le padding par défaut */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+header
+{
+  background-color: blue;
+  display: flex;
+}
+
+/* Style de la grille pour les conteneurs */
+#container {
+  display: flex;
+  height: 100vh; /* Utilise la pleine hauteur de la fenêtre de visualisation */
+}
+
+#box1 
+{ 
+  display: flex;
+  flex-direction: column; /* Cela organise les enfants verticalement */
+
+  flex: 1; /* Assure que chaque boîte prend un tiers de l'espace */
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+}
+
+#box2 
+{ 
+  display: flex;
+  flex-direction: column; /* Cela organise les enfants verticalement */
+
+  flex: 1; /* Assure que chaque boîte prend un tiers de l'espace */
+  justify-content: center; /* Centre le contenu horizontalement */
+  align-items: center; /* Centre le contenu verticalement */
+} /* Orange */
+
+iframe
+{
+  display: flex;
+  height: 100vh; /* Utilise la pleine hauteur de la fenêtre de visualisation */
+  width: 100%;
+}

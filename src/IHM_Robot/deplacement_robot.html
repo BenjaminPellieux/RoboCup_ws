@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Déplacement robot</title>
+  <link rel="icon" type="image/png" href="Images/baptiste.jfif">
+
+  <script type="text/javascript" src="../js/EventEmitter2-master/lib/eventemitter2.js"></script>
+  <script type="text/javascript" src="../js/roslibjs-develop/build/roslib.js"></script>
+  <script type="text/javascript" src="deplacement_robot.js"></script>
+  
+  <link rel="stylesheet" href="deplacement_robot.css">
+  
+  
+</head>
+
+<header>
+  <div>
+    <h1>Déplacement</h1>
+  </div>
+  <div id="choix">
+    <a href="deplacement_robot.html">
+      <button id="button_robot">Robot</button>
+    </a>
+    <a href="deplacement_bras.html">
+      <button id="button_bras">Bras</button>
+    </a>
+  </div>
+</header>
+
+<body>
+
+<div id="conteneur_page">
+  <div id="conteneur_page_gauche">
+    <h3>Vitesse du robot (en m/s)</h3>
+    <input>
+    <h3>Inclinaison du robot (en °)</h3>
+    <input>
+    <h3>Derive du robot (en °)</h3>
+    <input>
+  </div>
+
+
+  <div id="conteneur_page_droite">
+
+    <div id="conteneur_droite_haut">
+      <h3>Contrôle du Robot</h3>
+      <div id="conteneur_haut">
+        <button class="button" onclick="deplacement_avant()">↑</button>
+      </div>
+      <div id="conteneur_milieu">
+        <button class="button" onclick="deplacement_gauche()">←</button>
+        <button class="button_stop" onclick="stop()">⏹️</button>
+        <button class="button" onclick="deplacement_droite()">→</button>
+      </div>
+      <div id="conteneur_bas">
+        <button class="button" onclick="deplacement_arriere()">↓</button>
+      </div>
+    </div>
+
+    <div id="conteneur_droite_bas">
+
+      <div id="sens">
+        <div id="position">
+          <div id="flipperAVG">
+            <h3>Flippers /</h3>
+            <div id="conteneur_haut">
+             <button class="button" onclick="flipper_hautAVG()">↑</button>
+            </div>
+            <div id="conteneur_milieu">
+              <button class="button_stop" onclick="stop()">⏹️</button>
+            </div>
+            <div id="conteneur_bas">
+              <button class="button" onclick="flipper_basAVG()">↓</button>
+            </div>
+          </div>
+
+          <div id="camera">
+        <h3>/ Camera</h3>
+        <div id="conteneur_haut">
+          <button class="button" onclick="camera_haut()">↑</button>
+        </div>
+        <div id="conteneur_milieu">
+          <button class="button_stop" onclick="stop()">⏹️</button>
+        </div>
+        <div id="conteneur_bas">
+          <button class="button" onclick="camera_bas()">↓</button>
+        </div>
+      </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,297 @@
+#define nullptr NULL
+#include <ros.h>
+#include "BrasMSGS.h"
+#include "ax12.h"
+#include "Dynamixel.h"
+#include <sensor_msgs/JointState.h>
+#include <std_msgs/String.h>
+#include <std_msgs/Empty.h>
+#include <std_msgs/Float64.h>
+#include <std_msgs/Int16MultiArray.h>
+
+#include <std_msgs/Float64MultiArray.h>
+#define SERIAL_SERVO Serial3
+#define SERIAL_CAM Serial2
+#define Read Serial
+
+#define PIN_RTS 4
+#define TAILLE_ARRAY 8
+
+ros::NodeHandle  nh;
+
+void init_bras();
+
+char dim0_label[] = "joint";
+
+const byte servoID_0 = 0x00;//Axe1
+const byte servoID_1 = 0x01;//Axe2
+const byte servoID_2 = 0x02;//Axe2
+const byte servoID_3 = 0x03;//Axe3
+const byte servoID_4 = 0x04;//Axe3
+const byte servoID_5 = 0x05;//Axe4
+const byte servoID_6 = 0x06;//Axe5
+const byte servoID_7 = 0x07;//Axe6
+const byte servoID_8 = 0x08;//Gripper
+const byte servoID_all = 0xFE;
+
+std_msgs::Int16MultiArray retour_angle; 
+std_msgs::Int16MultiArray Pos;  
+
+void JointState(const std_msgs::Int16MultiArray& joint_states);
+void ChoixPos(const std_msgs::Int16MultiArray& Pos);
+//void ChoixFct( const std_msgs::Int16MultiArray choix);
+
+ros::Subscriber<std_msgs::Int16MultiArray> sub("choix_pos", JointState);
+ros::Publisher chatter("chatter_ard", &retour_angle);
+ros::Subscriber<std_msgs::Int16MultiArray> sub_pos("choix_pos", ChoixPos);
+
+
+void ChoixPos(const std_msgs::Int16MultiArray& Pos)
+{
+  chatter.publish(&Pos);
+  switch(Pos.data[0])
+  {
+    case 1 ://position classic
+        SimplePos(servoID_6, 1900, 30);
+          delay(4000);
+        SimplePos(servoID_5, 2048, 30);
+          delay(4000);
+       DoublePose(servoID_3,servoID_4, 2050, 2050,30);
+          delay(4000);
+        DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+          delay(4000);
+        SimplePos(servoID_0, 2048, 30);
+          delay(4000);
+      break;      
+
+    case 2 ://postion  repos
+    SimplePos(servoID_6, 1000, 30);
+    delay(4000);
+    SimplePos(servoID_5, 3000, 30);
+    delay(4000);
+    DoublePose(servoID_3,servoID_4, 3000, 3000,30);
+    delay(4000);
+    DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+    delay(4000);
+    SimplePos(servoID_0, 2048, 30);
+    delay(4000);
+   
+      break;
+      case 3 ://postion  HAUTE    
+      SimplePos(servoID_5, 1000, 30);
+    delay(4000);
+    DoublePose(servoID_3,servoID_4, 1024, 1024,30);
+    delay(4000);
+    DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+    delay(4000);
+    SimplePos(servoID_0, 2048, 30);
+    delay(4000);
+    SimplePos(servoID_6, 1024, 30);
+    delay(4000);
+
+      break;
+    default :  
+      break;
+  }
+  
+}
+
+void JointState(const std_msgs::Int16MultiArray& joint_states){ 
+     
+    for(int i=1; i<7; i++)
+    {
+      
+      retour_angle.data[i] = joint_states.data[i];// JE VEUX QUON MEMVOIE DIRECTEMENT MES VALEURS INT ENTRE MIN MAX POUR CHAQUE AXE
+      
+        
+    }
+    if(retour_angle.data[0]>0)
+    {
+      switch(retour_angle.data[0])
+  {
+    case 1 ://position classic
+        SimplePos(servoID_6, 1900, 30);
+          delay(4000);
+        SimplePos(servoID_5, 2048, 30);
+          delay(4000);
+       DoublePose(servoID_3,servoID_4, 2050, 2050,30);
+          delay(4000);
+        DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+          delay(4000);
+        SimplePos(servoID_0, 2048, 30);
+          delay(4000);
+      break;      
+
+    case 2 ://postion  repos
+    SimplePos(servoID_6, 1000, 30);
+    delay(4000);
+    SimplePos(servoID_5, 3000, 30);
+    delay(4000);
+    DoublePose(servoID_3,servoID_4, 3000, 3000,30);
+    delay(4000);
+    DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+    delay(4000);
+    SimplePos(servoID_0, 2048, 30);
+    delay(4000);
+   
+      break;
+      case 3 ://postion  HAUTE    
+      SimplePos(servoID_5, 1000, 30);
+    delay(4000);
+    DoublePose(servoID_3,servoID_4, 1024, 1024,30);
+    delay(4000);
+    DoublePose(servoID_1,servoID_2, 2048, 2048,30);
+    delay(4000);
+    SimplePos(servoID_0, 2048, 30);
+    delay(4000);
+    SimplePos(servoID_6, 1024, 30);
+    delay(4000);
+
+      break;
+    default :  
+      break;
+  }
+    }
+    else
+    {
+      SimplePos(servoID_0, retour_angle.data[1], 30);//Axe1
+      DoublePose(servoID_1,servoID_2, retour_angle.data[2], retour_angle.data[2],30);//e2
+      DoublePose(servoID_3,servoID_4, retour_angle.data[3], retour_angle.data[3],30);//Je revup bien la valeur mais je touche psa -> il reste bloque le con
+      SimplePos(servoID_5, retour_angle.data[4], 30);
+      SimplePos(servoID_6, retour_angle.data[5], 30);
+      motor_position(retour_angle.data[5]);
+    }
+    
+
+    
+   // motor_position(retour_angle.data[5]);
+   // WriteServo(servoID_8, state.pos[8],XL430_P);
+
+}
+
+/*
+ * 0
+ servo 0 = 2048
+ servo 1 = 2048
+ servo 2 = 2048
+ servo 3 = 2048
+ servo 4 = 2048
+ servo 5 = 2048
+ servo 6 = 2048
+*/
+
+void Script_Bidon()
+{
+}
+
+
+//AX12 motor=AX12();
+long baud;
+
+void setup() { 
+
+  Serial.begin (115200);                             // inicializa el SoftSerial a 115,2 Kb/s
+  baud = 2000000L / (35);
+  AX12::init (baud);
+  int detect;                                    // array para detectar automáticamente las ID de 2 motores
+  AX12::autoDetect (&detect, 1);                     // detección de IDs
+  motor.id = detect;                        // asigna las ID detectadas a los motores definidos previamente
+  motor.id = 0x08;
+
+  retour_angle.layout.dim           = (std_msgs::MultiArrayDimension *)
+  malloc(sizeof(std_msgs::MultiArrayDimension) * TAILLE_ARRAY);
+  retour_angle.layout.dim_length    = 0;
+  retour_angle.data_length          = TAILLE_ARRAY;
+  retour_angle.layout.dim[0].label  = dim0_label;
+  retour_angle.layout.dim[0].size   = TAILLE_ARRAY;
+  retour_angle.layout.dim[0].stride = 1 * TAILLE_ARRAY;
+  retour_angle.layout.data_offset   = 0;
+  retour_angle.data                 = (int *)malloc(sizeof(int) * TAILLE_ARRAY);
+
+  
+  nh.getHardware()->setBaud(57600);
+  nh.initNode   (); 
+  nh.subscribe  (sub);
+  //nh.subscribe  (sub_pos);
+  nh.advertise  (chatter);
+
+  BeginServo();
+  delay(1000);
+  init_bras();
+
+
+
+//  WriteServo(servoID_8, 0,XL430_MIN); //End Effector
+//  WriteServo(servoID_8, 4095,XL430_MAX);
+//  WriteServo(servoID_8, 1,XL430_T);
+//  WriteServo(servoID_8, 900,XL430_P);
+
+}
+
+void loop() {
+
+  nh.spinOnce();
+  delay(1);
+  //motor.AX12::setEndlessTurnMode(1);
+  //motor.AX12::endlessTurn(10);
+  //Script_Bidon();
+//  ReadTest();
+
+ 
+  
+  
+  
+  //WriteTest();
+
+}
+
+void motor_init () {
+  
+    motor.writeInfo (24, 1);               // habilita el torque
+    motor.setEndlessTurnMode(false);                   // lo pone en modo de rotación continua
+   // setear la inercia y todo eso
+    motor.writeInfo (26, 0);
+    motor.writeInfo (27, 0);
+    motor.writeInfo (28, 95);
+    motor.writeInfo (29, 95);
+    motor.writeInfo (48, 1);
+    motor.writeInfo (14, 1023);
+    motor.writeInfo (11, 85);
+    motor.writeInfo (12, 60);
+    motor.writeInfo (13, 190);
+    motor.writeInfo (5, 150);  
+}
+
+void init_bras()
+{
+   Reboot(servoID_0);
+  Reboot(servoID_1);
+  Reboot(servoID_2);
+  Reboot(servoID_3);
+  Reboot(servoID_4);
+  Reboot(servoID_5);
+  Reboot(servoID_6);
+
+  ServoInit(servoID_0,0,4095);    //Axe1
+  ServoInit(servoID_1,1024,3072); //Axe2
+  ServoInit(servoID_2,1024,3072); //Axe2
+  ServoInit(servoID_3,1024,3072); //Axe3
+  ServoInit(servoID_4,1024,3072); //Axe3
+  ServoInit(servoID_5,0,4095);    //Axe4
+  ServoInit(servoID_6,1024,3072); //Axe5 
+  //motor_init ();
+  WriteServo(servoID_0,1,TORQUE_ENABLE);
+  WriteServo(servoID_1,1,TORQUE_ENABLE);
+  WriteServo(servoID_2,1,TORQUE_ENABLE);
+  WriteServo(servoID_3,1,TORQUE_ENABLE);
+  WriteServo(servoID_4,1,TORQUE_ENABLE);
+  WriteServo(servoID_5,1,TORQUE_ENABLE);
+  WriteServo(servoID_6,1,TORQUE_ENABLE);
+}
+
+void motor_position(int pos)
+{
+  if (pos < 0) motor.writeInfo (30, 0);
+  else if (pos > 1023) motor.writeInfo (30, 1023);
+  else motor.writeInfo (30, pos);
+}

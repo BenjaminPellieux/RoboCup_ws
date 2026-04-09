@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="user-scalable=no">
+
+
+  <script type="text/javascript" src="../js/EventEmitter2-master/lib/eventemitter2.js"></script>
+  <script type="text/javascript" src="../js/roslibjs-develop/build/roslib.js"></script>
+
+  <link rel="stylesheet" href="deplacement_bras.css">
+  <title>Déplacement bras</title>
+</head>
+
+<header>
+  <div>
+    <h1>Déplacement</h1>
+  </div>
+  <div id="choix">
+    <a href="deplacement_robot.html">
+      <button id="button_robot">Robot</button>
+    </a>
+    <a href="deplacement_bras.html">
+      <button id="button_bras">Bras</button>
+    </a>
+  </div>
+</header>
+
+
+
+
+
+<body>
+
+
+
+
+
+
+<div id="haut">
+
+    <div id="texte">
+      <h3>Déplacements :</h3>
+    </div>
+
+    <div class="slider-container">
+      <label for="sliderX">1</label>
+      <input type="range" class="slider" min="1600" max="2400" value="2048" step="5" id="sliderx" name="sliderX" onclick="deplacement_x()" >
+      <button onclick="changeSliderValue('sliderx', -5)">-</button>
+      <button onclick="changeSliderValue('sliderx', 5)">+</button>
+    </div>
+
+    <div class="slider-container">
+      <label for="sliderY">2</label>
+      <input type="range" class="slider" min="1400" max="2400" value="2048" step="5" id="slidery" name="sliderY" onclick="deplacement_y()" >
+      <button onclick="changeSliderValue('slidery', -5)">-</button>
+      <button onclick="changeSliderValue('slidery', 5)">+</button>
+    </div>
+
+    <div class="slider-container">
+     <label for="sliderZ">KO</label>
+     <input type="range" class="slider" min="0" max="1" value="1" step="1" id="sliderz" name="sliderZ" onclick="deplacement_z()" >
+      <button onclick="changeSliderValue('sliderz', -0.03)">-</button>
+      <button onclick="changeSliderValue('sliderz', 0.03)">+</button>
+    </div>
+   </div>
+
+   <div id="bas">
+
+    <h3>Rotations :</h3>
+
+    <div class="slider-container">
+      <label for="sliderRX">4</label>
+      <input type="range" class="slider" min="0" max="4095" value="2048" step="5" id="sliderrx" name="sliderRX" onclick="rotation_x()" >
+      <button onclick="changeSliderValue('sliderrx', -5)">-</button>
+      <button onclick="changeSliderValue('sliderrx', 5)">+</button>
+    </div>
+
+    <div class="slider-container">
+      <label for="sliderRY">5</label>
+      <input type="range" class="slider" min="700" max="3200" value="2048" step="5" id="sliderry" name="sliderRY" onclick="rotation_y()" >
+      <button onclick="changeSliderValue('sliderry', -5)">-</button>
+      <button onclick="changeSliderValue('sliderry', 5)">+</button>
+    </div>
+
+    <div class="slider-container">
+      <label for="sliderRZ">KO</label>
+      <input type="range" class="slider" min="-180" max="180" value="0" step="1" id="sliderrz" name="sliderRZ" onclick="rotation_z()" >
+      <button onclick="changeSliderValue('sliderrz', -1)">-</button>
+      <button onclick="changeSliderValue('sliderrz', 1)">+</button>
+    </div>
+
+  </div>
+
+  <div id="rangement_bras">
+    <button id="bouton_rangement" onclick="setButtonValueAndSend(1)">Rangement</button>
+<button id="bouton_deploiement" onclick="setButtonValueAndSend(2)">Déploiement</button>
+<button id="bouton_position_haute" onclick="setButtonValueAndSend(3)">Position haute</button>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="deplacement_bras.js"></script>
+</body>
+</html>

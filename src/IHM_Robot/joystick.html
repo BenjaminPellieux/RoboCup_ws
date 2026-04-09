@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joystick Virtuel</title>
+    <style>
+        #joystick-container {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            margin: 100px auto;
+        }
+
+        #joystick {
+            width: 100px;
+            height: 100px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+
+<div id="joystick-container">
+    <div id="joystick"></div>
+</div>
+
+<script>
+    var container = document.getElementById('joystick-container');
+    var joystick = document.getElementById('joystick');
+
+    container.addEventListener('mousedown', function(event) {
+        moveJoystick(event);
+        document.addEventListener('mousemove', moveJoystick);
+    });
+
+    document.addEventListener('mouseup', function() {
+        document.removeEventListener('mousemove', moveJoystick);
+        joystick.style.top = '50%';
+        joystick.style.left = '50%';
+    });
+
+    function moveJoystick(event) {
+        var rect = container.getBoundingClientRect();
+        var joystickMaxMove = rect.width / 2;
+        var x = event.clientX - rect.left;
+        var y = event.clientY - rect.top;
+
+        var dx = x - joystickMaxMove;
+        var dy = y - joystickMaxMove;
+        var distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < joystickMaxMove) {
+            joystick.style.left = `${x - joystick.offsetWidth / 2}px`;
+            joystick.style.top = `${y - joystick.offsetHeight / 2}px`;
+        }
+    }
+    function moveJoystick(event) {
+    var rect = container.getBoundingClientRect();
+    var centerX = rect.left + rect.width / 2;
+    var centerY = rect.top + rect.height / 2;
+    var x = event.clientX;
+    var y = event.clientY;
+
+    var dx = x - centerX;
+    var dy = y - centerY;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+    var maxDistance = rect.width / 2;
+
+    if (distance > maxDistance) {
+        var ratio = maxDistance / distance;
+        dx *= ratio;
+        dy *= ratio;
+        distance = maxDistance;
+    }
+
+    joystick.style.left = `${centerX + dx - rect.left - joystick.offsetWidth / 2}px`;
+    joystick.style.top = `${centerY + dy - rect.top - joystick.offsetHeight / 2}px`;
+}
+
+</script>
+
+</body>
+</html>
