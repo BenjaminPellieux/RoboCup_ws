@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
-<package format="2">
-  <name>Robocup2024_PaysBas</name>
+<package format="3">
+  <name>robocup_2027</name>
   <version>0.0.0</version>
-  <description>The Robocup2024_PaysBas package</description>
-
-  <maintainer email="dominik@todo.todo">Dominik</maintainer>
+  <description>Le package RMS PIF 2027</description>
 
   <license>TODO</license>
 
@@ -13,39 +11,20 @@
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/opencv_example</url> -->
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <build_depend>roscpp</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>message_generation</build_depend>
-  <build_depend>cv_bridge</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>image_transport</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>tf2_ros</build_depend>
-  <build_depend>tf2</build_depend>
-
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>std_msgs</build_export_depend>
-  <build_export_depend>message_generation</build_export_depend>
-  <build_export_depend>cv_bridge</build_export_depend>
-  <build_export_depend>sensor_msgs</build_export_depend>
-  <build_export_depend>image_transport</build_export_depend>
-  <build_export_depend>geometry_msgs</build_export_depend>
-  <build_export_depend>tf2_ros</build_export_depend>
-  <build_export_depend>tf2</build_export_depend>
-
-  <exec_depend>message_runtime</exec_depend>
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>cv_bridge</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
-  <exec_depend>image_transport</exec_depend>
-  <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>tf2_ros</exec_depend>
-  <exec_depend>tf2</exec_depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>rosidl_default_generators</depend>
+  <depend>rosidl_default_runtime</depend>
 
   <export>
-    <!-- Other tools can request additional information be placed here -->
+    <build_type>ament_cmake</build_type>
   </export>
 </package>

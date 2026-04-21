@@ -1,32 +1,36 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(Robocup2024_PaysBas)
-
-## Compile as C++11, supported in ROS Kinetic and newer 
-add_compile_options(-std=c++11)
-
-## Find catkin macros and libraries
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  message_generation
-  std_msgs
-  cv_bridge
-  sensor_msgs
-  image_transport
-  geometry_msgs
-  tf2_ros
-  tf2
+cmake_minimum_required(VERSION 3.16)
+project(robocup_2027
+  VERSION 0.0.0
+  DESCRIPTION "RoboCup 2027 - Robot Autonome et Téléopéré"
+  LANGUAGES CXX
 )
+
+## Compile as C++17 for ROS 2
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+## Find ROS 2 packages
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(cv_bridge REQUIRED)
+find_package(image_transport REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
 find_package(OpenCV REQUIRED)
 find_package(PCL REQUIRED)
-find_package(PythonLibs 3 REQUIRED)
+find_package(Python3 COMPONENTS Development REQUIRED)
 
 include_directories(
-  ${catkin_INCLUDE_DIRS}
+  include
   ${OpenCV_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
-  ${PYTHON_INCLUDE_DIRS}
-  /home/ros/catkin_ws/src/Robocup2024_PaysBas/matplotlib-cpp
+  ${Python3_INCLUDE_DIRS}
+  matplotlib-cpp
 )
 
 link_directories(${PCL_LIBRARY_DIRS})
@@ -38,27 +42,17 @@ add_definitions(${PCL_DEFINITIONS})
 ################################################
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  Traitement_HSV.srv
-  Pas.srv
-)
-
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  sensor_msgs
-  geometry_msgs
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/Traitement_HSV.srv"
+  "srv/Pas.srv"
+  DEPENDENCIES std_msgs sensor_msgs geometry_msgs
 )
 
 ###################################
-## catkin specific configuration ##
+## ament specific configuration  ##
 ###################################
-catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs message_runtime cv_bridge sensor_msgs
-  DEPENDS PCL OpenCV
-)
+
+ament_package()
 
 ###########
 ## Build ##
@@ -81,25 +75,51 @@ add_executable(${PROJECT_NAME}_recuperation_data_auto_node src/Lidar/recuperatio
 add_executable(${PROJECT_NAME}_Exploration_Publisher_node src/Lidar/Exploration_Publisher.cpp)
 
 # Lier les bibliothèques avec les exécutables
-target_link_libraries(${PROJECT_NAME}_QRcode_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_republish_joy_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_lot_camera_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_copie_trajet_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_Exploration_automatique_intelligente_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_Exploration_Publisher_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_Initialisation_Accelero_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_Bras_Automatique_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_HSV_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_recuperation_data_auto_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(${PROJECT_NAME}_Exploration_Publisher_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_QRcode_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_republish_joy_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_lot_camera_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_copie_trajet_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_Exploration_automatique_intelligente_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_Exploration_Publisher_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_Initialisation_Accelero_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_Bras_Automatique_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_HSV_node ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_recuperation_data_auto_node ${OpenCV_LIBRARIES})
 
-# Ajouter des dépendances pour les messages générés
-add_dependencies(${PROJECT_NAME}_republish_joy_node ${PROJECT_NAME}_generate_messages_cpp)
-add_dependencies(${PROJECT_NAME}_lot_camera_node ${PROJECT_NAME}_generate_messages_cpp)
-add_dependencies(${PROJECT_NAME}_Bras_Automatique_node ${PROJECT_NAME}_generate_messages_cpp)
-add_dependencies(${PROJECT_NAME}_HSV_node ${PROJECT_NAME}_generate_messages_cpp)
+# Ajouter les dépendances ROS 2
+ament_target_dependencies(${PROJECT_NAME}_QRcode_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_republish_joy_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_lot_camera_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_copie_trajet_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_Exploration_automatique_intelligente_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_Exploration_Publisher_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_Initialisation_Accelero_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_Bras_Automatique_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_HSV_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
+ament_target_dependencies(${PROJECT_NAME}_recuperation_data_auto_node rclcpp std_msgs sensor_msgs cv_bridge image_transport geometry_msgs tf2_ros tf2)
 
+# Installer les exécutables
+install(TARGETS
+  ${PROJECT_NAME}_QRcode_node
+  ${PROJECT_NAME}_republish_joy_node
+  ${PROJECT_NAME}_lot_camera_node
+  ${PROJECT_NAME}_node
+  ${PROJECT_NAME}_copie_trajet_node
+  ${PROJECT_NAME}_Exploration_automatique_intelligente_node
+  ${PROJECT_NAME}_Initialisation_Accelero_node
+  ${PROJECT_NAME}_Bras_Automatique_node
+  ${PROJECT_NAME}_HSV_node
+  ${PROJECT_NAME}_recuperation_data_auto_node
+  ${PROJECT_NAME}_Exploration_Publisher_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Installer les headers
+install(DIRECTORY include/
+  DESTINATION include
+)
 
 
 

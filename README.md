@@ -1,11 +1,11 @@
 # RoboCup 2024
 ## Projet Robotique Autonome et Téléopéré
 
-Ce projet ROS est développé pour la compétition RoboCup 2024 aux Pays-Bas. Il intègre plusieurs modules pour la vision par ordinateur, la navigation autonome, la manipulation d'objets et l'interface homme-machine.
+Ce projet ROS est développé pour la compétition RoboCup 2027 aux Pays-Bas. Il intègre plusieurs modules pour la vision par ordinateur, la navigation autonome, la manipulation d'objets et l'interface homme-machine.
 
 ---
 
-## 📋 Table des matières
+## Table des matières
 
 - [Architecture Générale](#architecture-générale)
 - [Prérequis](#prérequis)
@@ -49,8 +49,36 @@ RoboCup_ws/
 ## Prérequis
 
 ### Système d'exploitation
-- Ubuntu 18.04 ou 20.04 (recommandé pour ROS Noetic)
-- Ubuntu 16.04 (compatible avec ROS Kinetic)
+- Ubuntu 24.04 (Noble)
+
+### Installation de ROS 2 Jazzy
+Suivez la documentation officielle : https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html
+
+```bash
+# 1. Configurer les paramètres régionaux (locale)
+locale  # Vérifier la support UTF-8
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+# 2. Activer le dépôt Universe
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+
+# 3. Ajouter les sources ROS 2
+sudo apt update && sudo apt install curl -y
+export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F'"' '{print $4}')
+curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+sudo dpkg -i /tmp/ros2-apt-source.deb
+
+# 4. Installer ROS 2 Jazzy
+sudo apt update
+sudo apt upgrade -y
+sudo apt install ros-jazzy-desktop -y
+
+# 5. Installer les outils de développement
+sudo apt install ros-dev-tools -y
+```
 
 ### Dépendances Système
 ```bash
@@ -63,15 +91,9 @@ sudo apt-get install -y \
   libopencv-dev \
   python3-dev \
   libpcl-dev \
-  python3-pip
+  python3-pip \
+  python3-colcon-common-extensions
 ```
-
-### ROS et Outils
-- **ROS Noetic** ou **Kinetic** (voir installation officielle : http://wiki.ros.org/ROS/Installation)
-- **catkin** (gestionnaire de build pour ROS)
-- **cv_camera** (capteur caméra OpenCV)
-- **rosserial** (communication série)
-- **joy** (support manette de jeu)
 
 ### Dépendances C++
 - OpenCV 3.0+
@@ -86,45 +108,92 @@ sudo apt-get install -y \
 ### 1. Cloner le workspace
 ```bash
 cd ~/
-git clone https://github.com/serrhiniabdellah/RoboCup_ws ros_workspaces/RoboCup_ws
+git clone https://github.com/BenjaminPellieux/RoboCup_ws ros_workspaces/RoboCup_ws
 cd ros_workspaces/RoboCup_ws
 ```
 
-### 2. Installer les dépendances ROS
+### 2. Installer les dépendances ROS 2
 ```bash
 # Installer les dépendances manquantes via rosdep
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
-### 3. Sourcer l'environnement ROS
-```bash
-source /opt/ros/noetic/setup.bash  # Pour ROS Noetic
-# OU
-source /opt/ros/kinetic/setup.bash  # Pour ROS Kinetic
+### 3. Sourcer l'environnement ROS 2 Jazzy
 
-# Ajouter à votre ~/.bashrc pour source automatique
-echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+Avant de compiler et d'utiliser le workspace, toujours sourcer d'abord ROS 2 :
+
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+**Pour sourcer automatiquement à chaque ouverture de terminal** :
+
+```bash
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 4. Compiler avec catkin
+### 4. Compiler avec colcon
 
 ```bash
 cd ~/ros_workspaces/RoboCup_ws
-catkin_make
+colcon build
 
 # Ou pour un nettoyage complet avant recompilation :
-catkin_make clean
-catkin_make
+colcon build --symlink-install --cmake-clean-first
 ```
 
 ### 5. Sourcer votre workspace après compilation
+
+Après la compilation, un dossier `install/` est créé avec automatiquement un fichier `setup.bash` :
+
 ```bash
-source ~/ros_workspaces/RoboCup_ws/devel/setup.bash
+source ~/ros_workspaces/RoboCup_ws/install/setup.bash
 
 # Ajouter au ~/.bashrc pour source automatique
-echo "source ~/ros_workspaces/RoboCup_ws/devel/setup.bash" >> ~/.bashrc
+echo "source ~/ros_workspaces/RoboCup_ws/install/setup.bash" >> ~/.bashrc
 source ~/.bashrc
+```
+
+**Important** : Toujours sourcer ROS 2 d'abord, puis votre workspace :
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source ~/ros_workspaces/RoboCup_ws/install/setup.bash
+```
+
+---
+
+## Explication du fichier setup.bash
+
+Il y a **deux fichiers `setup.bash` distincts** :
+
+### 1. Setup du système ROS 2
+**Chemin** : `/opt/ros/jazzy/setup.bash`
+
+- Créé automatiquement lors de l'installation de ROS 2 via apt
+- À sourcer en **premier**
+- Configure les variables d'environnement ROS de base
+- Disponible pour tous les projets
+
+### 2. Setup du workspace
+**Chemin** : `~/ros_workspaces/RoboCup_ws/install/setup.bash`
+
+- Créé **automatiquement** par `colcon build`
+- À sourcer en **second**
+- Configure l'accès aux packages et dépendances du workspace
+- Vous n'avez pas besoin de le créer manuellement
+
+**Ordre correct d'initialisation** :
+```bash
+# D'abord : le système ROS 2
+source /opt/ros/jazzy/setup.bash
+
+# Ensuite : votre workspace
+source ~/ros_workspaces/RoboCup_ws/install/setup.bash
+
+# Maintenant vous pouvez utiliser ros2 et lancer vos nœuds
+ros2 launch RoboCup_ws Bras.launch.py
 ```
 
 ---
@@ -132,36 +201,41 @@ source ~/.bashrc
 ## Lancement du Projet
 
 ### Lancement Rapide - Configuration Complète
+
+Tous les modules cités ici ne sont pas fonctionnels sur cette version du RMS.
+
 ```bash
+# Assurez-vous que ROS 2 et votre workspace sont sourcés
+source /opt/ros/jazzy/setup.bash
+source ~/ros_workspaces/RoboCup_ws/install/setup.bash
+
 # Option 1 : Bras Automatique avec Caméra
-roslaunch Robocup2024_PaysBas Bras.launch
+ros2 launch RoboCup_ws Bras.launch.py
 
 # Option 2 : Caméra Haute Résolution
-roslaunch Robocup2024_PaysBas Flux_8MP.launch
+ros2 launch RoboCup_ws Flux_8MP.launch.py
 
 # Option 3 : Système Lidar
-roslaunch Robocup2024_PaysBas Lidar.launch
+ros2 launch RoboCup_ws Lidar.launch.py
 
 # Option 4 : Initialisation Accéléromètre
-roslaunch Robocup2024_PaysBas Init_Accelero.launch
+ros2 launch RoboCup_ws Init_Accelero.launch.py
 
 # Option 5 : Mode Sauvetage (Rescue)
-roslaunch Robocup2024_PaysBas Rescue.launch
+ros2 launch RoboCup_ws Rescue.launch.py
 ```
 
 ### Lancement Étape par Étape
 ```bash
-# Terminal 1 : Démarrer roscore
-roscore
+# Terminal 1 : Lancer le nœud caméra
+# (En ROS 2, pas besoin de roscore)
+ros2 launch RoboCup_ws Bras.launch.py
 
-# Terminal 2 : Lancer le nœud caméra
-roslaunch Robocup2024_PaysBas Bras.launch
+# Terminal 2 : Visualiser les images (optionnel)
+ros2 run rqt_image_view rqt_image_view
 
-# Terminal 3 : Visualiser les images (optionnel)
-rosrun rqt_image_view rqt_image_view
-
-# Terminal 4 : Visualiser les données (optionnel)
-rosrun rviz rviz
+# Terminal 3 : Visualiser les données (optionnel)
+ros2 run rviz2 rviz2
 ```
 
 ### Lancement Automatisé Complet
@@ -174,31 +248,7 @@ bash scripts/launch_all.sh
 
 ## Modules Disponibles
 
-### 🦾 Bras Automatique
-**Fichiers** : `src/Bras_Automatique/`
-
-Permet la détection et manipulation automatique d'objets :
-- Détection d'objets via HSV (teinte, saturation, valeur)
-- Calcul de position en 3D
-- Contrôle automatisé du bras
-- Calibration HSV configurable
-
-**Utilisation** :
-```bash
-roslaunch Robocup2024_PaysBas Bras.launch
-```
-
-### 🎮 Bras Manuel
-**Fichiers** : `src/Bras_Manuel/`
-
-Contrôle du bras via manette de jeu ou clavier :
-- Interface ROS
-- Configuration des plages moteurs
-- URDF pour simulation
-
-**Lancement** : Utiliser la manette via le module Deplacement_Robot
-
-### 📷 Caméra Économique
+### Caméra Économique
 **Fichiers** : `src/Camera_Economique/`
 
 Système de vision bas coût :
@@ -211,7 +261,7 @@ Système de vision bas coût :
 - Périphérique : `/dev/video0`, `/dev/video1`, etc.
 - Fréquence d'images
 
-### 🚀 Déplacement Robot
+### Déplacement Robot
 **Fichiers** : `src/Deplacement_Robot/`
 
 Gestion de la locomotion du robot :
@@ -222,41 +272,6 @@ Gestion de la locomotion du robot :
 **Topics** :
 - `/joy` : Données brutes manette
 - `/cmd_vel` : Commandes de vitesse
-
-### 👁 Détection de Mouvement
-**Fichiers** : `src/Detection_Mouvement/`
-
-Analyse vidéo pour détection de mouvement :
-- Scripts Python pour flux vidéo continu
-- Configuration en temps réel
-- Seuils ajustables
-
-**Scripts** :
-- `Detection_Mouvement.py` : Mode unique
-- `Detection_Mouvement_Continu.py` : Flux continu
-
-### 📊 Lidar
-**Fichiers** : `src/Lidar/`
-
-Système de cartographie 3D et navigation :
-- Traitement des nuages de points
-- Exploration autonome
-- Accéléromètre intégré
-
-### 🔤 QR Code
-**Fichiers** : `src/QRCode/`
-
-Détection et décodage de codes QR :
-- Localisation précise
-- Extraction de données
-
-### 📈 Accéléromètre (IMU)
-**Fichiers** : `src/Accelerometre/`
-
-Capteur inertiel (MPU-9250) :
-- Mesure accélération 3D
-- Orientation gyroscope
-- Calibration disponible
 
 ---
 
@@ -280,10 +295,10 @@ int64 HighV       # Valeur maximale (0-255)
 **Utilisation** :
 ```bash
 # Ajuster la détection HSV pendant l'exécution
-rosservice call /Traitement_HSV 30 180 100 255 100 255
+ros2 service call /Traitement_HSV robocupws_interfaces/srv/TraitementHSV "{lowh: 30, highh: 180, lows: 100, highs: 255, lowv: 100, highv: 255}"
 
 # Pour faciliter la calibration, utiliser :
-opencv3_V2_node
+# opencv3_V2_node
 ```
 
 ### Service : Pas
@@ -394,12 +409,11 @@ Plages de mouvement pour chaque articulation du bras
 ### Erreur de Compilation
 ```bash
 # Nettoyer et recompiler
-catkin_make clean
-rm -rf build devel
-catkin_make
+colcon build --cmake-clean-first
 
-# Ou utiliser ccache pour plus rapide
-catkin_make -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+# Ou un nettoyage complet
+rm -rf build install log
+colcon build
 ```
 
 ### Caméra non détectée
@@ -423,15 +437,19 @@ sudo usermod -a -G dialout $USER
 newgrp dialout
 ```
 
-### Problèmes ROS
+### Problèmes ROS 2
 ```bash
-# Vérifier la connectivité ROS
-rosnode list
-rostopic list
+# Vérifier les nœuds en cours d'exécution
+ros2 node list
 
-# Déboguer les nœuds
-rostopic echo /topic_name
-rosservice list
+# Lister les topics disponibles
+ros2 topic list
+
+# Écouter un topic spécifique
+ros2 topic echo /topic_name
+
+# Lister les services
+ros2 service list
 ```
 
 ### Manque de dépendances
@@ -450,7 +468,21 @@ htop
 # Regarder utilisation CPU/RAM
 
 # Réduire la résolution caméra
-# Modifier dans les fichiers .launch
+# Modifier dans les fichiers .launch.py
+```
+
+### Sourcing incorrect
+Si vous rencontrez des erreurs comme "command not found: ros2" :
+
+```bash
+# Vérifier que ROS 2 est sourcé
+source /opt/ros/jazzy/setup.bash
+
+# Vérifier que votre workspace est sourcé
+source ~/ros_workspaces/RoboCup_ws/install/setup.bash
+
+# Vérifier l'ordre d'exécution (ROS 2, puis workspace)
+echo $ROS_DISTRO  # Doit afficher 'jazzy'
 ```
 
 ---
@@ -466,22 +498,14 @@ htop
 
 ## Notes Importantes
 
-- ⚠️ Assurez-vous que `roscore` est lancé avant les autres nœuds
-- ⚠️ Vérifiez les permissions USB pour les périphériques série
-- ℹ️ Les paramètres HSV doivent être calibrés selon l'éclairage ambiant
-- ℹ️ Utilisez `rqt` pour monitorer les topics et debugger en temps réel
+- **ROS 2 Jazzy** n'utilise pas `roscore` : il est lancé automatiquement quand vous exécutez les nœuds
+- Toujours sourcer ROS 2 d'abord : `source /opt/ros/jazzy/setup.bash`
+- Puis sourcer votre workspace : `source ~/ros_workspaces/RoboCup_ws/install/setup.bash`
+- Les fichiers de lancement sont maintenant en `.launch.py` (Python) au lieu de `.launch` (XML)
+- Vérifiez les permissions USB pour les périphériques série
+- Les paramètres HSV doivent être calibrés selon l'éclairage ambiant
+- Utilisez `rqt` pour monitorer les topics et debugger en temps réel
 
 ---
 
-## Licence
-
-À définir
-
-## Mainteneurs
-
-- Dominik (dominik@todo.todo)
-
----
-
-**Dernière mise à jour** : Mars 2026
-    
+**Dernière mise à jour** : Avril 2026
